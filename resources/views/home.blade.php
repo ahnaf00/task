@@ -1,11 +1,12 @@
 @extends('layouts.admin', ['title' => 'My Profile'])
 
 @section('mainContent')
+
     <div class="container">
         <div class="d-flex justify-content-between">
             <div class="d-flex gap-3">
-                <div class="rounded-lg">
-                    <img class="rounded" id="imgSrc" alt="profile_image"/>
+                <div class="rounded-lg=">
+                    <img class="rounded w-25" id="imgSrc" alt="profile_image"/>
                 </div>
                 <div>
                     <h2 class="fw-bold font-bold">{{ auth()->user()->name }}</h2>
@@ -41,5 +42,35 @@
         }
 
         $("#imgSrc").attr('src', loadImage())
+
+        $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
+        });
+
+        $('#image').on('change', function () {
+            let formData = new FormData();
+            formData.append('image', this.files[0]);
+
+            $.ajax({
+                url: "{{ route('profile.image.upload') }}",
+                type: 'POST',
+                data: formData,
+                contentType: false,
+                processData: false,
+                success: function (response) {
+                    if (response.success) {
+                        $('#imgSrc').attr('src', '/' + response.image);
+                        alert('Image uploaded successfully!');
+                    } else {
+                        alert('Failed to upload image.');
+                    }
+                },
+                error: function (xhr) {
+                    alert('An error occurred. Please try again.');
+                }
+            });
+        });
     </script>
 @endsection

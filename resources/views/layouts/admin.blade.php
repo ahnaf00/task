@@ -17,7 +17,7 @@
                             </li>
 
                             <li class="nav-item rounded-md">
-                                <a class="nav-link  p-3 rounded-md  {{ Route::is('products') ? 'active' : '' }}" href="{{ route('products') }}">Products</a>
+                                <a class="nav-link  p-3 rounded-md  {{ Route::is('products.index') ? 'active' : '' }}" href="{{ route('products.index') }}">Products</a>
                             </li>
                         </ul>
                     </div>
